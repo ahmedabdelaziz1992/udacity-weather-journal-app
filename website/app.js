@@ -12,14 +12,14 @@ const submitBtn = document.querySelector('#generate');
 // Click handler funciton
 const handleBtnClick = (e) => {
     const zipCode = zipCodeInput.value;
-    const userFeel = feelInput.value;
+    const content = feelInput.value;
     return getTemperature(baserUrl, zipCode, apiKey)
         .then(data => {
             // POST data to our serve
-            submitData('http://localhost:8000/addWeather', {
+            submitData('http://localhost:8000/add', {
                 temperature: data.main.temp,
                 date: newDate,
-                user_response: userFeel
+                'user response': content
             })
         })
         // Update the UI
@@ -70,7 +70,7 @@ const updateUI = async () => {
         const retrievedData = await response.json();
         document.querySelector('#date').innerHTML = retrievedData.date;
         document.querySelector('#temp').innerHTML = retrievedData.temperature;
-        document.querySelector('#content').innerHTML = retrievedData.user_response;
+        document.querySelector('#content').innerHTML = retrievedData['user response'];
     } catch(error) {
         console.log('error', error);
     }
