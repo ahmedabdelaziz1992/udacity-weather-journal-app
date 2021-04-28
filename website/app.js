@@ -7,29 +7,29 @@ const baserUrl = 'https://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = 'de30bd7ef32095adacc6840f9d387d3e';
 const zipCodeInput = document.querySelector('#zip');
 const feelInput = document.querySelector('#feelings');
-const generateBtn = document.querySelector('#generate');
-
-// Event listener for the generate button
-generateBtn.addEventListener('click', handleBtnClick);
+const submitBtn = document.querySelector('#generate');
 
 // Click handler funciton
-function handleBtnClick(e) {
+const handleBtnClick = (e) => {
     const zipCode = zipCodeInput.value;
     const userFeel = feelInput.value;
     return getTemperature(baserUrl, zipCode, apiKey)
         .then(data => {
             // POST data to our serve
-            postData('http://localhost:8000/addWeather', {
+            submitData('http://localhost:8000/addWeather', {
                 temperature: data.main.temp,
                 date: newDate,
                 user_response: userFeel
             })
-            // Update the UI
-            .then(() => {
-                updateUI();
-            });
+        })
+        // Update the UI
+        .then(() => {
+            updateUI();
         });
-}
+};
+
+// Event listener for the generate button
+submitBtn.addEventListener('click', handleBtnClick);
 
 // Async function to make a GET request to the OpenWeatherMap API
 const getTemperature = async (base, code, key) => {
@@ -44,7 +44,7 @@ const getTemperature = async (base, code, key) => {
 };
 
 // Async function to make a POST request to our server
-const postData = async (url = '', data = {}) => {
+const submitData = async (url='', data={}) => {
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
